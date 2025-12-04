@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal de Dashboards | Power BI</title>
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-card: #111827;
+      --accent: #1d4ed8;
+      --accent-soft: #1e40af;
+      --text: #e5e7eb;
+      --text-soft: #9ca3af;
+      --border: #1f2937;
+      --radius-lg: 18px;
+      --shadow-soft: 0 18px 45px rgba(0,0,0,0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1e293b 0, #020617 55%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 90%;
+      padding: 15px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      gap: 12px;
+    }
+
+    header h1 {
+      font-size: 1.35rem;
+      margin: 0;
+      letter-spacing: 0.04em;
+    }
+
+    header p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--text-soft);
+    }
+
+    .badge {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: var(--text-soft);
+    }
+
+    main {
+      background: linear-gradient(135deg, rgba(15,23,42,0.98), rgba(15,23,42,0.9));
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      padding: 20px;
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(14px);
+    }
+
+    .view {
+      display: none;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    /* MENU VIEW */
+
+    #menu-view h2 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 1.15rem;
+    }
+
+    #menu-view p {
+      margin-top: 0;
+      margin-bottom: 18px;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+    }
+
+    .grid-buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+    }
+
+    .menu-btn {
+      border: 1px solid rgba(55, 65, 81, 0.7);
+      background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.18), rgba(15, 23, 42, 0.98));
+      color: var(--text);
+      border-radius: var(--radius-lg);
+      padding: 14px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, border 0.12s ease, background 0.12s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .menu-btn::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(248, 250, 252, 0.08), transparent 55%);
+      opacity: 0;
+      transition: opacity 0.18s ease;
+      pointer-events: none;
+    }
+
+    .menu-btn span.title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .menu-btn span.desc {
+      font-size: 0.78rem;
+      color: var(--text-soft);
+    }
+
+    .menu-btn span.tag {
+      margin-top: 10px;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #a5b4fc;
+      border-radius: 999px;
+      border: 1px solid rgba(129, 140, 248, 0.4);
+      padding: 3px 8px;
+      background: rgba(15, 23, 42, 0.8);
+    }
+
+    .menu-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.9);
+      border-color: rgba(59, 130, 246, 0.7);
+      background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.32), rgba(15, 23, 42, 0.98));
+    }
+
+    .menu-btn:hover::after {
+      opacity: 1;
+    }
+
+    /* REPORT VIEW */
+
+    #report-view-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    #report-title {
+      font-size: 1rem;
+      margin: 0;
+    }
+
+    #back-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.9));
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: background 0.12s ease, transform 0.12s ease, box-shadow 0.12s ease, border 0.12s ease;
+    }
+
+    #back-btn span.icon {
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    #back-btn:hover {
+      background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.3), rgba(15, 23, 42, 0.96));
+      color: #e5e7eb;
+      border-color: rgba(59, 130, 246, 0.8);
+      transform: translateY(-0.5px);
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.8);
+    }
+
+    #back-btn:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    .iframe-wrapper {
+      margin-top: 10px;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      background: radial-gradient(circle at top, #020617, #020617);
+      position: relative;
+      padding-top: 62%; /* altura responsiva (16:10 aprox.) */
+    }
+
+    #report-frame {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .hint {
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      margin-top: 8px;
+    }
+
+    @media (max-width: 720px) {
+      main {
+        padding: 16px;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      header h1 {
+        font-size: 1.1rem;
+      }
+
+      .iframe-wrapper {
+        padding-top: 75%; /* fica melhor em celular */
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div>
+        <h1>Portal de Dashboards</h1>
+        <p>Central para acessar seus workbooks do Power BI em uma única tela.</p>
+      </div>
+      <div class="badge">Menu &bull; Power BI</div>
+    </header>
+
+    <main>
+      <!-- VISÃO MENU -->
+      <section id="menu-view" class="view active">
+        <h2>Escolha um dashboard</h2>
+        <p>Clique em um dos painéis abaixo para abrir o relatório dentro desta página.</p>
+
+        <div id="buttons-container" class="grid-buttons"></div>
+      </section>
+
+      <!-- VISÃO REPORT -->
+      <section id="report-view" class="view">
+        <div id="report-view-header">
+          <h2 id="report-title">Título do relatório</h2>
+          <button id="back-btn">
+            <span class="icon">←</span>
+            <span>Voltar ao menu</span>
+          </button>
+        </div>
+
+        <div class="iframe-wrapper">
+          <iframe
+            id="report-frame"
+            src=""
+            allowfullscreen="true"
+          ></iframe>
+        </div>
+
+        <div class="hint">
+          Se o relatório não aparecer, verifique se o link do Power BI permite incorporação (embed) e se você está autenticado na conta correta.
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // ============================
+    // CONFIGURAÇÃO DOS WORKBOOKS
+    // ============================
+
+    
+    const REPORTS = [
+      {
+        id: "sugar",
+        titulo: "Dashboard Açúcar",
+        descricao: "Indicadores de NY#11, FX, basis e margens.",
+        tag: "Comercialização",
+        url: "https://app.powerbi.com/reportEmbed?reportId=55a9ed76-e7e3-4095-97ad-ef9716024807&autoAuth=true&ctid=218a0bc0-da28-481a-b30a-f99d5282b330"
+      },
+      {
+        id: "ethanol",
+        titulo: "Dashboard Etanol",
+        descricao: "ESALQ, B3, arbitragem açúcar/etanol e liquidez.",
+        tag: "Etanol",
+        url: "https://app.powerbi.com/reportEmbed?reportId=e7112617-02ed-419c-b6ea-8a6e19c15beb&autoAuth=true&ctid=218a0bc0-da28-481a-b30a-f99d5282b330"
+      },
+      {
+        id: "energy",
+        titulo: "Dashboard Energia",
+        descricao: "RBOB, Brent, Diesel e paridade gasolina/etanol.",
+        tag: "Energia",
+        url: "https://app.powerbi.com/"
+      },
+      {
+        id: "grains",
+        titulo: "Dashboard Grãos",
+        descricao: "Soja, milho e prêmio de exportação Santos.",
+        tag: "Grãos",
+        url: "https://app.powerbi.com/"
+      }
+    ];
+
+    // ============================
+    // LÓGICA DA PÁGINA
+    // ============================
+
+    const menuView   = document.getElementById("menu-view");
+    const reportView = document.getElementById("report-view");
+    const buttonsContainer = document.getElementById("buttons-container");
+    const reportTitle = document.getElementById("report-title");
+    const reportFrame = document.getElementById("report-frame");
+    const backBtn = document.getElementById("back-btn");
+
+    /**
+     * Constrói dinamicamente os botões do menu com base no array REPORTS.
+     */
+    function buildMenuButtons() {
+      buttonsContainer.innerHTML = "";
+
+      REPORTS.forEach(report => {
+        const btn = document.createElement("button");
+        btn.className = "menu-btn";
+        btn.type = "button";
+
+        btn.innerHTML = `
+          <span class="title">${report.titulo}</span>
+          <span class="desc">${report.descricao}</span>
+          <span class="tag">${report.tag}</span>
+        `;
+
+        btn.addEventListener("click", () => openReport(report));
+        buttonsContainer.appendChild(btn);
+      });
+    }
+
+    /**
+     * Abre um relatório: troca de view e carrega a URL no iframe.
+     */
+    function openReport(report) {
+      reportTitle.textContent = report.titulo || "Relatório";
+      reportFrame.src = report.url || "";
+
+      menuView.classList.remove("active");
+      reportView.classList.add("active");
+    }
+
+    /**
+     * Volta ao menu: limpa o iframe e troca a view.
+     */
+    function backToMenu() {
+      reportFrame.src = ""; // limpa o iframe para não ficar carregando em background
+      reportView.classList.remove("active");
+      menuView.classList.add("active");
+    }
+
+    // Eventos
+    backBtn.addEventListener("click", backToMenu);
+
+    // Inicialização
+    buildMenuButtons();
+  </script>
+</body>
+</html>
