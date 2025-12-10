@@ -7,15 +7,27 @@
 
   <style>
     :root {
-      --bg: #0f172a;
-      --bg-card: #111827;
-      --accent: #1d4ed8;
-      --accent-soft: #1e40af;
-      --text: #e5e7eb;
-      --text-soft: #9ca3af;
-      --border: #1f2937;
+      /* Paleta Lins Agroindustrial */
+      --azul-lins: #0032A0;
+      --azul-medio: #1996DC;
+      --verde-lins: #00B5AD;
+
+      --sec-1: #BFD630;
+      --sec-2: #FFDE1A;
+      --sec-3: #8EFAF5;
+      --sec-4: #80C242;
+      --sec-5: #FF9421;
+      --sec-6: #7F5CFA;
+
+      /* Derivados para o tema */
+      --bg-card: #ffffff;           /* fundo do card principal */
+      --accent: var(--azul-lins);   /* azul institucional */
+      --accent-soft: var(--azul-medio);
+      --text: #08213f;              /* texto principal em azul escuro */
+      --text-soft: #4b5563;         /* cinza azulado para subtítulos */
+      --border: #d0dbff;            /* borda clara azulada */
       --radius-lg: 18px;
-      --shadow-soft: 0 18px 45px rgba(0,0,0,0.45);
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.15);
     }
 
     * {
@@ -24,58 +36,109 @@
 
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #1e293b 0, #020617 55%);
+      font-family: Verdana, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #ffffff;
       color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      align-items: stretch;
-      justify-content: center;
     }
 
+    /* container central da página */
     .app {
-      width: 100%;
-      max-width: 90%;
-      padding: 15px;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 24px 32px 24px;
     }
 
-    header {
+    /* BARRA AZUL SUPERIOR, seguindo o site principal */
+    .topbar {
+      background-color: var(--azul-lins);
+      color: #ffffff;
+      padding: 10px 32px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+      margin-bottom: 24px;
+    }
+
+    .topbar-inner {
+      max-width: 1320px;
+      margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 18px;
+      gap: 16px;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
       gap: 12px;
     }
 
+    .logo-big {
+      height: 64px;   /* ajuste se quiser maior/menor */
+      width: auto;
+      display: block;
+    }
+
+    .topbar-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+    }
+
+    .topbar-main-title {
+      font-size: 0.8rem;
+      font-weight: 400;
+      opacity: 0.9;
+    }
+
+    .badge {
+      padding: 6px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #ffffff;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(0, 0, 0, 0.08));
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+    }
+
+    /* CABEÇALHO DO CONTEÚDO (dentro da área branca) */
+    header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      gap: 12px;
+      color: var(--accent);
+    }
+
+    .header-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
     header h1 {
-      font-size: 1.35rem;
-      margin: 0;
+      font-size: 1.6rem;
+      margin: 0 0 4px 0;
       letter-spacing: 0.04em;
+      font-weight: 700;
+      color: var(--accent);
     }
 
     header p {
       margin: 0;
-      font-size: 0.85rem;
-      color: var(--text-soft);
-    }
-
-    .badge {
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.09em;
+      font-size: 0.9rem;
       color: var(--text-soft);
     }
 
     main {
-      background: linear-gradient(135deg, rgba(15,23,42,0.98), rgba(15,23,42,0.9));
+      background: var(--bg-card);
       border-radius: 24px;
       border: 1px solid var(--border);
-      padding: 20px;
+      padding: 20px 20px 16px 20px;
       box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(14px);
     }
 
     .view {
@@ -90,8 +153,9 @@
 
     #menu-view h2 {
       margin-top: 0;
-      margin-bottom: 8px;
-      font-size: 1.15rem;
+      margin-bottom: 6px;
+      font-size: 1.2rem;
+      color: var(--azul-lins);
     }
 
     #menu-view p {
@@ -103,14 +167,15 @@
 
     .grid-buttons {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 14px;
     }
 
     .menu-btn {
-      border: 1px solid rgba(55, 65, 81, 0.7);
-      background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.18), rgba(15, 23, 42, 0.98));
-      color: var(--text);
+      border: 1px solid rgba(0, 50, 160, 0.18);
+      background:
+        linear-gradient(135deg, rgba(0, 50, 160, 0.96), rgba(25, 150, 220, 0.98));
+      color: #f9fafb;
       border-radius: var(--radius-lg);
       padding: 14px 14px;
       display: flex;
@@ -127,7 +192,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(248, 250, 252, 0.08), transparent 55%);
+      background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.22), transparent 55%);
       opacity: 0;
       transition: opacity 0.18s ease;
       pointer-events: none;
@@ -135,13 +200,13 @@
 
     .menu-btn span.title {
       font-size: 0.95rem;
-      font-weight: 600;
+      font-weight: 700;
       margin-bottom: 4px;
     }
 
     .menu-btn span.desc {
       font-size: 0.78rem;
-      color: var(--text-soft);
+      color: #e5ecff;
     }
 
     .menu-btn span.tag {
@@ -149,18 +214,19 @@
       font-size: 0.65rem;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: #a5b4fc;
+      color: #ffffff;
       border-radius: 999px;
-      border: 1px solid rgba(129, 140, 248, 0.4);
+      border: 1px solid rgba(132, 169, 22, 0.9);
       padding: 3px 8px;
-      background: rgba(15, 23, 42, 0.8);
+      background: var(--sec-1); /* verde-amarelado da paleta secundária */
     }
 
     .menu-btn:hover {
       transform: translateY(-1px);
-      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.9);
-      border-color: rgba(59, 130, 246, 0.7);
-      background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.32), rgba(15, 23, 42, 0.98));
+      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.4);
+      border-color: rgba(255, 255, 255, 0.9);
+      background:
+        linear-gradient(135deg, rgba(0, 50, 160, 1), rgba(25, 150, 220, 1));
     }
 
     .menu-btn:hover::after {
@@ -174,20 +240,22 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       flex-wrap: wrap;
     }
 
     #report-title {
       font-size: 1rem;
       margin: 0;
+      color: var(--azul-lins);
+      font-weight: 700;
     }
 
     #back-btn {
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.9));
-      color: var(--text-soft);
+      border: 1px solid rgba(0, 50, 160, 0.45);
+      background: linear-gradient(135deg, #ffffff, #e1ecff);
+      color: var(--azul-lins);
       display: inline-flex;
       align-items: center;
       gap: 6px;
@@ -203,11 +271,10 @@
     }
 
     #back-btn:hover {
-      background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.3), rgba(15, 23, 42, 0.96));
-      color: #e5e7eb;
-      border-color: rgba(59, 130, 246, 0.8);
+      background: linear-gradient(135deg, #e0f2ff, #ffffff);
+      border-color: var(--azul-medio);
       transform: translateY(-0.5px);
-      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.8);
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.18);
     }
 
     #back-btn:active {
@@ -216,13 +283,13 @@
     }
 
     .iframe-wrapper {
-      margin-top: 10px;
-      border-radius: 18px;
+      margin-top: 6px;
+      border-radius: 16px;
       overflow: hidden;
-      border: 1px solid rgba(31, 41, 55, 0.9);
-      background: radial-gradient(circle at top, #020617, #020617);
+      border: 1px solid rgba(0, 50, 160, 0.45);
+      background: #ffffff;
       position: relative;
-      padding-top: 62%; /* altura responsiva (16:10 aprox.) */
+      padding-top: 60%; /* proporção próxima de 16:9 */
     }
 
     #report-frame {
@@ -240,6 +307,23 @@
     }
 
     @media (max-width: 720px) {
+      .topbar {
+        padding: 10px 16px;
+      }
+
+      .topbar-inner {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      .logo-big {
+        height: 52px;
+      }
+
+      .app {
+        padding: 0 12px 24px 12px;
+      }
+
       main {
         padding: 16px;
       }
@@ -247,10 +331,11 @@
       header {
         flex-direction: column;
         align-items: flex-start;
+        gap: 6px;
       }
 
       header h1 {
-        font-size: 1.1rem;
+        font-size: 1.3rem;
       }
 
       .iframe-wrapper {
@@ -260,12 +345,26 @@
   </style>
 </head>
 <body>
+
+  <!-- Barra azul superior, parecida com o site principal -->
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-left">
+        <img src="Logo Horizontal_Branco e Verde.png" alt="Lins Agroindustrial" class="logo-big">
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-main-title">Portal interno de Inteligência de Mercado</div>
+        <div class="badge">MENU • POWER BI</div>
+      </div>
+    </div>
+  </div>
+
   <div class="app">
     <header>
-      <div>
-        <h1>Inteligência de Mercado</h1>        
+      <div class="header-left">
+        <h1>Inteligência de Mercado</h1>
+        <p>Central de dashboards em Power BI</p>
       </div>
-      <div class="badge">Menu &bull; Power BI</div>
     </header>
 
     <main>
@@ -306,8 +405,6 @@
     // ============================
     // CONFIGURAÇÃO DOS WORKBOOKS
     // ============================
-
-    
     const REPORTS = [
       {
         id: "sugar",
@@ -342,7 +439,6 @@
     // ============================
     // LÓGICA DA PÁGINA
     // ============================
-
     const menuView   = document.getElementById("menu-view");
     const reportView = document.getElementById("report-view");
     const buttonsContainer = document.getElementById("buttons-container");
@@ -350,57 +446,37 @@
     const reportFrame = document.getElementById("report-frame");
     const backBtn = document.getElementById("back-btn");
 
-    /**
-     * Constrói dinamicamente os botões do menu com base no array REPORTS.
-     */
     function buildMenuButtons() {
       buttonsContainer.innerHTML = "";
-
       REPORTS.forEach(report => {
         const btn = document.createElement("button");
         btn.className = "menu-btn";
         btn.type = "button";
-
         btn.innerHTML = `
           <span class="title">${report.titulo}</span>
           <span class="desc">${report.descricao}</span>
           <span class="tag">${report.tag}</span>
         `;
-
         btn.addEventListener("click", () => openReport(report));
         buttonsContainer.appendChild(btn);
       });
     }
 
-    /**
-     * Abre um relatório: troca de view e carrega a URL no iframe.
-     */
     function openReport(report) {
       reportTitle.textContent = report.titulo || "Relatório";
       reportFrame.src = report.url || "";
-
       menuView.classList.remove("active");
       reportView.classList.add("active");
     }
 
-    /**
-     * Volta ao menu: limpa o iframe e troca a view.
-     */
     function backToMenu() {
-      reportFrame.src = ""; // limpa o iframe para não ficar carregando em background
+      reportFrame.src = "";
       reportView.classList.remove("active");
       menuView.classList.add("active");
     }
 
-    // Eventos
     backBtn.addEventListener("click", backToMenu);
-
-    // Inicialização
     buildMenuButtons();
   </script>
 </body>
 </html>
-
-
-
-
